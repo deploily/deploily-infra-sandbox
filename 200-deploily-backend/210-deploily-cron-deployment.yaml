@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploily-cron
+  name: deploily-cron
+  namespace: deploily
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploily-cron
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: deploily-cron
+    spec:
+      containers:
+        - image: ghcr.io/deploily/deploily-backend:main
+          imagePullPolicy: Always
+          name: deploily-cron
+          command:
+            - /start-cron
+          ports:
+            - name: http
+              containerPort: 5000
+          env:
+            - name: DEBUG
+              value: "true"
+            - name: SECRET_KEY
+              value: "..."
+            - name: ALLOWED_HOSTS
+              value: ".localhost,127.0.0.1,[::1],deploily.local"
+            - name: CSRF_TRUSTED_ORIGINS
+              value: "http://localhost,http://127.0.0.1,http://deploily.local"
+            - name: FLASK_APP
+              value: wsgi.py
+            - name: FLASK_RUN_PORT
+              value: "5000"
+            - name: FLASK_DEBUG
+              value: ""
+            - name: SQLALCHEMY_DATABASE_URI
+              value: "postgresql://postgres:postgres@postgres.deploily.svc.cluster.local:5432/deploily"
+            - name: APP_FOLDER
+              value: app
+
+            - name: KEYKCLOAK_URL
+              value: http://keycloak.deploily.svc.cluster.local:8080
+            - name: KEYCLOAK_REALM_NAME
+              value: deploily
+            - name: KEYCLOAK_CLIENT_SECRET
+              value: ".."
+            - name: KEYCLOAK_CLIENT_ID
+              value: deploily
+
+
+            - name: MAIL_HOST
+              value: "..."
+            - name: MAIL_PORT
+              value: "..."
+            - name: MAIL_USER
+              value: "..."
+            - name: MAIL_PASS
+              value: "..."
+            - name: NOTIFICATION_EMAIL
+              value: "..."
+            - name: SUPPORT_EMAIL
+              value: "..."
+
+            - name: CACHE_TYPE
+              value: "..."
+
+            - name: SCHEDULER_ENABLED
+              value: "True"
+
+      restartPolicy: Always
