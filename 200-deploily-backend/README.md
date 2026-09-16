@@ -22,7 +22,7 @@ kubectl create ns deploily
 
 ## TODOs
 
--[] Set temporary secrets variables in manifest files  
--[] Add manifest for keycloak and related setup
--[] Add manifest for Redis and related setup 
--[] Add manifest for Rancher and related setup 
+- Set temporary secrets variables in manifest files  
+- Add manifest for keycloak and related setup
+- Add manifest for Redis and related setup 
+- Add manifest for Rancher and related setup 
